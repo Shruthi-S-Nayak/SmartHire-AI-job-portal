@@ -18,7 +18,13 @@ const updateProfile = async (req, res) => {
 const uploadResume = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ success: false, message: "No file uploaded" });
-    const user = await User.findByIdAndUpdate(req.user._id, { resume: `/uploads/${req.file.filename}` }, { new: true }).select("-password");
+    // Cloudinary gives us req.file.path as the full URL
+    const resumeUrl = req.file.path || req.file.secure_url;
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { resume: resumeUrl },
+      { new: true }
+    ).select("-password");
     res.json({ success: true, message: "Resume uploaded", resumeUrl: user.resume });
   } catch (e) { res.status(500).json({ success: false, message: e.message }); }
 };

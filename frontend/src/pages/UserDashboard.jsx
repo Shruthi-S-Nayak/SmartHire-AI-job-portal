@@ -307,7 +307,7 @@ const UserDashboard = () => {
                       <p className="text-sm font-bold text-green-700">✅ Resume uploaded</p>
                       <p className="text-xs text-green-600 mt-0.5">PDF file on record</p>
                     </div>
-                    <a href={`${import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:8000"}${user.resume}`}
+                    <a href={user.resume}
                       target="_blank" rel="noreferrer"
                       className="text-sm text-blue-600 hover:underline font-semibold bg-white px-3 py-1.5 rounded-lg border border-blue-100">
                       View →

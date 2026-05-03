@@ -257,7 +257,7 @@ const RecruiterDashboard = () => {
                             🎯 Match: {app.matchScore}%
                           </span>
                           {app.applicant?.resume && (
-                            <a href={`${import.meta.env.VITE_API_URL?.replace("/api","") || "http://localhost:8000"}${app.applicant.resume}`}
+                            <a href={app.applicant.resume}
                               target="_blank" rel="noreferrer"
                               className="text-xs text-blue-600 hover:underline font-semibold bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
                               📄 View Resume

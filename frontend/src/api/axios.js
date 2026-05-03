@@ -11,14 +11,17 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// Auto logout on 401
+// Auto logout on 401 (expired/invalid token)
 API.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      window.location.href = "/login";
+      // Only redirect if not already on login/register page
+      if (!window.location.pathname.includes("/login") && !window.location.pathname.includes("/register")) {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(err);
   }

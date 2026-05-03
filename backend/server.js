@@ -46,4 +46,16 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+
+  // Keep Render free tier awake by pinging every 14 minutes
+  if (process.env.NODE_ENV !== "development") {
+    const https = require("https");
+    setInterval(() => {
+      https.get("https://smarthire-ai-job-portal.onrender.com", (res) => {
+        console.log(`Keep-alive ping: ${res.statusCode}`);
+      }).on("error", () => {});
+    }, 14 * 60 * 1000); // every 14 minutes
+  }
+});

@@ -9,9 +9,20 @@ connectDB();
 
 const app = express();
 
-// CORS — allow frontend URL in production, localhost in development
+// Allow multiple origins — local dev + both Render deployments
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(null, true); // Allow all for now — tighten after deploy
+  },
   credentials: true
 }));
 

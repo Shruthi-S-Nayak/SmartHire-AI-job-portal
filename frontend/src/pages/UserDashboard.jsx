@@ -308,9 +308,14 @@ const UserDashboard = () => {
                       <p className="text-xs text-green-600 mt-0.5">PDF file on record</p>
                     </div>
                     <a href={user.resume}
-                      target="_blank" rel="noreferrer"
-                      className="text-sm text-blue-600 hover:underline font-semibold bg-white px-3 py-1.5 rounded-lg border border-blue-100">
-                      View →
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.open(user.resume, "_blank", "noopener,noreferrer");
+                      }}
+                      className="text-sm text-white font-semibold bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-lg transition-colors">
+                      📄 View Resume
                     </a>
                   </div>
                 )}

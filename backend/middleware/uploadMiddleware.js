@@ -9,15 +9,17 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Store files directly on Cloudinary
+// Store PDF files on Cloudinary
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder:         "smarthire-resumes",
-    allowed_formats: ["pdf"],
-    resource_type:  "raw", // needed for PDF files
-    public_id: (req, file) => `resume-${req.user._id}-${Date.now()}`,
-  },
+  params: async (req, file) => ({
+    folder:        "smarthire-resumes",
+    resource_type: "raw",           // required for PDF
+    format:        "pdf",           // keep as PDF
+    public_id:     `resume-${req.user._id}-${Date.now()}`,
+    // fl_attachment:false makes it open in browser instead of downloading
+    flags:         "attachment:false",
+  }),
 });
 
 const fileFilter = (req, file, cb) => {
@@ -28,5 +30,5 @@ const fileFilter = (req, file, cb) => {
 module.exports = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
 });

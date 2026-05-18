@@ -257,9 +257,16 @@ const RecruiterDashboard = () => {
                             🎯 Match: {app.matchScore}%
                           </span>
                           {app.applicant?.resume && (
-                            <a href={app.applicant.resume}
-                              target="_blank" rel="noreferrer"
-                              className="text-xs text-blue-600 hover:underline font-semibold bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                            <a
+                              href={app.applicant.resume}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={(e) => {
+                                // Force open in new tab for PDF viewing
+                                e.preventDefault();
+                                window.open(app.applicant.resume, "_blank", "noopener,noreferrer");
+                              }}
+                              className="text-xs text-white font-semibold bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-full transition-colors">
                               📄 View Resume
                             </a>
                           )}

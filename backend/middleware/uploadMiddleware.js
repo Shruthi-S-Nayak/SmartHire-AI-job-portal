@@ -1,6 +1,6 @@
 const multer = require("multer");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 // Configure Cloudinary
 cloudinary.config({
@@ -9,16 +9,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Store PDF files on Cloudinary
+// Store PDF files on Cloudinary as raw resource
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => ({
     folder:        "smarthire-resumes",
-    resource_type: "raw",           // required for PDF
-    format:        "pdf",           // keep as PDF
-    public_id:     `resume-${req.user._id}-${Date.now()}`,
-    // fl_attachment:false makes it open in browser instead of downloading
-    flags:         "attachment:false",
+    resource_type: "raw",
+    public_id:     `resume_${req.user._id}_${Date.now()}`,
   }),
 });
 
@@ -30,5 +27,5 @@ const fileFilter = (req, file, cb) => {
 module.exports = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
+  limits: { fileSize: 5 * 1024 * 1024 },
 });

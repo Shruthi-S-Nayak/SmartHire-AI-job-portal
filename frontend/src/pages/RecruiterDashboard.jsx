@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import ChatBox from "../components/ChatBox";
+import { openResume } from "../utils/resumeHelper";
 
 const statusColors = {
   pending:     "bg-yellow-100 text-yellow-700",
@@ -257,18 +258,11 @@ const RecruiterDashboard = () => {
                             🎯 Match: {app.matchScore}%
                           </span>
                           {app.applicant?.resume && (
-                            <a
-                              href={app.applicant.resume}
-                              target="_blank"
-                              rel="noreferrer"
-                              onClick={(e) => {
-                                // Force open in new tab for PDF viewing
-                                e.preventDefault();
-                                window.open(app.applicant.resume, "_blank", "noopener,noreferrer");
-                              }}
+                            <button
+                              onClick={() => openResume(app.applicant.resume)}
                               className="text-xs text-white font-semibold bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-full transition-colors">
                               📄 View Resume
-                            </a>
+                            </button>
                           )}
                         </div>
                       </div>

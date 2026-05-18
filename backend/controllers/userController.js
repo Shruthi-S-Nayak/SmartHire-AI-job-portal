@@ -19,19 +19,13 @@ const uploadResume = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ success: false, message: "No file uploaded" });
 
-    // Build a viewable URL — Cloudinary raw files need fl_attachment:false to open in browser
-    let resumeUrl = req.file.path || req.file.secure_url || "";
+    // Get the raw Cloudinary URL
+    const rawUrl = req.file.path || req.file.secure_url || "";
 
-    // Convert download URL to viewable URL by adding fl_attachment:false
-    // Cloudinary URL format: https://res.cloudinary.com/cloud/raw/upload/v.../file.pdf
-    // Viewable format:       https://res.cloudinary.com/cloud/raw/upload/fl_attachment:false/v.../file.pdf
-    if (resumeUrl && resumeUrl.includes("cloudinary.com") && !resumeUrl.includes("fl_attachment")) {
-      resumeUrl = resumeUrl.replace("/upload/", "/upload/fl_attachment:false/");
-    }
-
+    // Save the raw URL — we'll use Google Docs viewer on frontend to display it
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { resume: resumeUrl },
+      { resume: rawUrl },
       { new: true }
     ).select("-password");
 

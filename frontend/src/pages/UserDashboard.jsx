@@ -3,6 +3,7 @@ import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import JobCard from "../components/JobCard";
 import ChatBox from "../components/ChatBox";
+import { openResume } from "../utils/resumeHelper";
 
 const statusColors = {
   pending:     "bg-yellow-100 text-yellow-700 border border-yellow-200",
@@ -307,16 +308,11 @@ const UserDashboard = () => {
                       <p className="text-sm font-bold text-green-700">✅ Resume uploaded</p>
                       <p className="text-xs text-green-600 mt-0.5">PDF file on record</p>
                     </div>
-                    <a href={user.resume}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.open(user.resume, "_blank", "noopener,noreferrer");
-                      }}
+                    <button
+                      onClick={() => openResume(user.resume)}
                       className="text-sm text-white font-semibold bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-lg transition-colors">
                       📄 View Resume
-                    </a>
+                    </button>
                   </div>
                 )}
                 <form onSubmit={handleResumeUpload} className="space-y-3">
